@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" href="style.css" type="text/css">-->
+    <title>Login</title> 
+</head>
+<body>
+    <section id="loginMain" class="mainSection">
+        <div id="loginTitles" class="mainTitles">
+            <h1 id="sapcTitle">Wanna share</h1>
+            <h1 id="loginTitle">Welcome back!</h1>
+        </div>
+        <div>
+            <fieldset>
+
+                <form id="loginForm" class="form" action="/login" method="POST">
+                    <label id="usernameLabel" class="fieldLabel" for="username">Username</label>
+                    <input class="logInput" type="text" placeholder="Type username" id="username" name="username" required>
+    
+                    <label id="passLabel" class="fieldLabel" for="password">Password</label>
+                    <input class="logInput" type="password" placeholder="Type password" id="password" name="passwd" required>
+    
+                    <button id="loginButton" type="submit">Sign in</button>
+                </form>
+
+                <a id="forgotPass" href="index.php?controller=user&amp;action=recover">Forgot password?</a><br/>
+                <div id="createContainer">
+                    <button id="createAcc" onclick="window.location.href='/register'">Create user</button>
+                </div>
+            </fieldset>
+        </div>
+
+        <div id=”dvErrorMsg” style="font-weight:bold; color: white; background-color:red">
+            {% with error_messages = get_flashed_messages() %}
+                {% if error_messages %}
+                    {% for message in error_messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </section>
+</body>
+</html>

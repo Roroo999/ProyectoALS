@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" href="style.css" type="text/css">-->
+    <title>Login</title> 
+</head>
+<body>
+    <section id="dashMain" class="mainSection">
+        <div class="mainTitles">
+            <h1 id="loginTitle">Wanna share!</h1>
+        </div>
+        <div>
+            <div>
+                <span>{{ username }}</span>
+                <span>{{ description }}</span>
+                <span>{{ followers }} followers</span>
+                <span>{{ following }} following</span>
+                {% for bar in recent_bars %}
+                    <span>{{ bar }}</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id=”dvErrorMsg” style="font-weight:bold; color: white; background-color:red">
+            {% with error_messages = get_flashed_messages() %}
+                {% if error_messages %}
+                    {% for message in error_messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" href="style.css" type="text/css">-->
+    <title>Creacte user</title> 
+</head>
+
+<body>    
+    <section id="registerMain" class="mainSection">
+        <div id="registerTitles" class="mainTitles">
+            <h1 id="sapcTitle">Wanna Share</h1>
+            <h1 id="resgisterTitle">Create new user</h1>
+        </div>
+        <div>
+            <fieldset>
+                <form id="registerForm" class="form" action="/register" method="POST">
+                    <label id="userLabel" class="fieldLabel" for="username">Username</label>
+                    <input class="logInput" type="text" placeholder="Type username" id="username" name="username" required>
+    
+                    <label id="passLabel" class="fieldLabel" for="password">Password</label>
+                    <input class="logInput" type="password" placeholder="Type password" id="password" name="passwd" required>
+
+                    <label id="emailLabel" class="fieldLabel" for="email">Email</label>
+                    <input class="logInput" type="text" placeholder="Type email" id="email" name="email" required>
+    
+                    <button id="registerButton" type="submit">Create user</button>
+                </form>
+            </fieldset>
+        </div>
+    </section>
+
+    <div id=”dvErrorMsg” style="font-weight:bold; color: white; background-color:red">
+        {% with error_messages = get_flashed_messages() %}
+            {% if error_messages %}
+                {% for message in error_messages %}
+                    {{ message }}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+</body>
+</html>
