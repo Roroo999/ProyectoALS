@@ -9,6 +9,7 @@ class User(flask_login.mixins.UserMixin):
         self.__passwd = safe.generate_password_hash(passwd)
         self.__followed = []
         self.__followers = []
+        self.__posts = []
 
     @property
     def username(self):
@@ -29,6 +30,10 @@ class User(flask_login.mixins.UserMixin):
     @property
     def followers(self):
         return self.__followers
+    
+    @property 
+    def posts(self):
+        return self.__posts
 
     def get_id(self):
         return self.username
@@ -44,6 +49,9 @@ class User(flask_login.mixins.UserMixin):
 
     def removeFollower(self, username):
         self.followers.remove(username)
+
+    def addPost(self, post):
+        self.posts.append(post)
 
     def compare_passwd(self, other_pass):
         return safe.check_password_hash(self.passwd, other_pass)
@@ -61,4 +69,4 @@ class User(flask_login.mixins.UserMixin):
     @staticmethod
     def find(srp: sirope.Sirope, username: str) -> "User":
         return srp.find_first(User, lambda u: u.username == username)
-    
+        

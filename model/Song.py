@@ -1,9 +1,7 @@
 class Song:
-    def __init__(self, name, artist, features, duration, genre, url):
+    def __init__(self, name, artist, genre, url):
         self.__name = name
         self.__artist = artist
-        self.__features = features
-        self.__duration = duration
         self.__genre = genre
         self.__rating = 0.0
         self.__url = url
@@ -23,22 +21,6 @@ class Song:
     @artist.setter
     def set_artist(self, nArt):
         self.__artist = nArt
-
-    @property
-    def features(self):
-        return self.__features
-
-    @features.setter
-    def set_features(self, nFeat):
-        self.__features = nFeat
-
-    @property
-    def duration(self):
-        return self.__duration
-    
-    @duration.setter
-    def set_duration(self, nDur):
-        self.__duration = nDur
 
     @property 
     def genre(self):
