@@ -27,16 +27,21 @@ def main():
 
 @app.route("/login", methods=["POST"])
 def login():
-    username = flask.request.form.get("username")
+    username = flask.request.form.get("username").lower()
     passwd = flask.request.form.get("passwd")
     user = User.find(srp, username)
-
-    if user.compare_passwd(passwd):
-        flask_login.login_user(user)
-        return flask.redirect("/home/main")
+    
+    if user is not None:
+        if user.compare_passwd(passwd):
+            flask_login.login_user(user)
+            return flask.redirect("/home/main")
+        else:
+            flask.flash("Error: las credenciales no coinciden")
+            return flask.redirect("/")
     else:
-        flask.flash("Error: las credenciales no coinciden")
+        flask.flash("Error: el usuario no existe")
         return flask.redirect("/")
+
 
 
 @app.route("/register", methods=["GET"])

@@ -3,7 +3,7 @@ class Post:
         self.__user = user
         self.__song = song
         self.__lyric = lyric
-        self.__rating = 0.0
+        self.__likes = 0
         self.__caption = caption
 
     @property
@@ -19,12 +19,15 @@ class Post:
         return self.__lyric
     
     @property
-    def rating(self):
-        return self.__rating
+    def likes(self):
+        return self.__likes
     
     @property
     def caption(self):
         return self.__caption
     
-    def update_rating(self, nRating):
-        self.__rating = nRating
+    def likePost(self):
+        self.__likes = self.__likes + 1
+
+    def removeLike(self):
+        self.__likes = self.__likes - 1

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--<link rel="stylesheet" href="style.css" type="text/css">-->
-    <title>Login</title> 
+    <title>View profile</title> 
 </head>
 <body>
     <section id="dashMain" class="mainSection">
@@ -14,11 +14,35 @@
         <div>
             <div>
                 <span>{{ username }}</span>
-                <span>{{ description }}</span>
+                <!--<span>{{ description }}</span>-->
                 <span>{{ followers }} followers</span>
                 <span>{{ following }} following</span>
-                {% for bar in recent_bars %}
-                    <span>{{ bar }}</span>
+                <span>
+                {% if followed == 0 %}
+                    <form id="followUser" action="/user/follow" method="POST">
+                        <input type="hidden" value="{{ username }}">
+                        <button id="followUser" type="submit">
+                            <span class="material-symbols-outlined">
+                                person_add
+                            </span>
+                        </button>
+                    </form>
+                {% else %}
+                    <form id="unfollowUser" action="/user/unfollow" method="POST">
+                        <input type="hidden" value="{{ username }}">
+                        <button id="unfollowUser" type="submit">
+                            <span class="material-symbols-outlined">
+                                person_remove
+                            </span>
+                        </button>
+                    </form>
+                {% endif %}
+                </span>
+                {% for post in recent_posts %}
+                    <br/>
+                    <span>{{ post.song }}</span>
+                    <span>{{ post.lyric }}</span>
+                    <span>{{ post.caption }}</span>
                 {% endfor %}
             </div>
         </div>

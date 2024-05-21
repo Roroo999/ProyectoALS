@@ -1,8 +1,6 @@
 import flask
 import sirope
-import random
 
-from flask_login import current_user
 from model.User import User
 from model.Song import Song
 from model.Lyric import Lyric
@@ -21,12 +19,35 @@ dash_blpr, srp = get_blprint()
 @dash_blpr.route("/main", methods=["GET"])
 def show_dash():
 
-    username = current_user.username
-
     post_list = get_relevant_posts()
 
     sust = {"post_list" : post_list}
     return flask.render_template("dashboard.html", **sust)
+
+@dash_blpr.route("/newPost", methods=["POST"])
+def publish_post():
+
+    songName = flask.request.form.get('songName').lower()
+    songArtist = flask.request.form.get('songArtist').lower()
+    songLink = flask.request.form.get('songLink')
+    lyricText = flask.request.form.get('lyricText')
+    lyricSinger = flask.request.form.get('lyricSinger')
+    postCaption = flask.request.form.get('postCaption')
+
+    song = Song(songName, songArtist, songLink)
+    lyric = Lyric(songName + "-" + songArtist, lyricSinger, lyricText)
+    user = User.current_user()
+
+    temp = srp.find_first(Song, lambda s: s.name == songName and s.artist == songArtist)
+
+    if temp is None:
+        srp.save(song)
+
+    srp.save(Post(user.username, song.get_id(), lyricText, postCaption))
+    return flask.redirect("/home/main")
+
+
+
 
 def get_relevant_posts():
     user = User.current_user()
@@ -39,25 +60,13 @@ def get_relevant_posts():
     posts = []
 
     for followed_user in followed_users:
-        followed_user_posts = srp.find_all(Post, lambda p: p.user == followed_user)
+        followed_user_posts = list(srp.filter(Post, lambda p: p.user == followed_user))
         posts.extend(followed_user_posts)
-
-    # Añadir publicaciones populares (por rating)
-    popular_posts = srp.find_all(Post, lambda p: p.rating > 4.0)
-    posts.extend(popular_posts)
-
-    # Filtrar y ordenar las publicaciones por relevancia
-    posts = list(set(posts))  # Eliminar duplicados
-    posts.sort(key=lambda p: p.rating, reverse=True)
 
     # Limitar el número de publicaciones para el dashboard
     max_posts = 20
     relevant_posts = posts[:max_posts]
 
-    # Si no hay suficientes publicaciones, añadir publicaciones aleatorias
-    if len(relevant_posts) < max_posts:
-        all_posts = srp.find_all(Post)
-        random_posts = random.sample(all_posts, max_posts - len(relevant_posts))
-        relevant_posts.extend(random_posts)
+    # Añadir posts de gente que no se siga pero que puedan resultar interesantes para el usuario
 
     return relevant_posts

@@ -70,3 +70,5 @@ class User(flask_login.mixins.UserMixin):
     def find(srp: sirope.Sirope, username: str) -> "User":
         return srp.find_first(User, lambda u: u.username == username)
         
+    def __str__(self):
+        return "Username: " + self.__username + "\nEmail: " + self.__email

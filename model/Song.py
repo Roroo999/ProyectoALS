@@ -1,9 +1,7 @@
 class Song:
-    def __init__(self, name, artist, genre, url):
+    def __init__(self, name, artist, url):
         self.__name = name
         self.__artist = artist
-        self.__genre = genre
-        self.__rating = 0.0
         self.__url = url
 
     @property
@@ -21,22 +19,6 @@ class Song:
     @artist.setter
     def set_artist(self, nArt):
         self.__artist = nArt
-
-    @property 
-    def genre(self):
-        return self.__genre
-    
-    @genre.setter
-    def set_genre(self, nGen):
-        self.__genre = nGen
-
-    @property
-    def rating(self):
-        return self.__rating
-    
-    @rating.setter
-    def set_rating(self, nRating):
-        self.__rating = nRating
 
     @property 
     def url(self):
