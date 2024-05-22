@@ -1,19 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--<link rel="stylesheet" href="style.css" type="text/css">-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script>
-        function showNewPostForm(){
+        function showNewPostForm() {
             document.getElementById("newPostForm").style.display = "block";
             document.getElementById("closeNewPostForm").style.display = "block";
             document.getElementById("addPost").style.display = "none";
         }
 
-        function closeNewPostForm(){
+        function closeNewPostForm() {
             document.getElementById("newPostForm").style.display = "none";
             document.getElementById("closeNewPostForm").style.display = "none";
             document.getElementById("addPost").style.display = "block";
@@ -22,15 +22,15 @@
     <title>Home</title> 
 </head>
 <body>
-    <section id="dashMain" class="mainSection">
-        <div class="mainTitles">
-            <h1 id="loginTitle">Wanna share!</h1>
+    <section id="dashMain" class="container">
+        <div id="dashTitles">
+            <h1 id="loginTitle" class="display-4">Wanna share!</h1>
         </div>
 
         <div>
-            <form id="searchBar" action="/user/searchUser" method="POST">
-                <input type="text" name="searchQuery" required>
-                <button type="submit">
+            <form id="searchBar" class="form-inline" action="/user/searchUser" method="POST">
+                <input id="searchInput" class="form-control mr-2" type="text" name="searchQuery" placeholder="Search for users..." required>
+                <button id="searchButton" class="btn btn-outline-secondary" type="submit">
                     <span class="material-symbols-outlined">
                         search
                     </span>
@@ -39,27 +39,26 @@
         </div>
 
         <div>
-            <button id="closeNewPostForm" onclick="closeNewPostForm()" style="display: none;">
+            <button id="closeNewPostForm" class="btn btn-outline-danger" onclick="closeNewPostForm()" style="display: none;">
                 <span class="material-symbols-outlined">
                     close
                 </span>
             </button>
 
-            <form id="newPostForm" action="/home/newPost" method="POST" style="display: none;">
-
-                <label>Song name</label>
-                <input type="text" name="songName" required>
-                <label>Artist</label>
-                <input type="text" name="songArtist" required>
-                <label>Link</label>
-                <input type="text" name="songLink">
-                <label>Lyric / Verse / Bar</label>
-                <input type="text" name="lyricText">
-                <label>Verse singer</label>
-                <input type="text" name="lyricSinger">
-                <label>Caption</label>
-                <input type="text" name="postCaption">
-                <button type="submit">
+            <form id="newPostForm" class="form-group" action="/home/newPost" method="POST" style="display: none;">
+                <label class="newPostLabel">Song name</label>
+                <input class="form-control" type="text" name="songName" required>
+                <label class="newPostLabel">Artist</label>
+                <input class="form-control" type="text" name="songArtist" required>
+                <label class="newPostLabel">Link</label>
+                <input class="form-control" type="text" name="songLink">
+                <label class="newPostLabel">Lyric / Verse / Bar</label>
+                <input class="form-control" type="text" name="lyricText">
+                <label class="newPostLabel">Verse singer</label>
+                <input class="form-control" type="text" name="lyricSinger">
+                <label class="newPostLabel">Caption</label>
+                <input class="form-control" type="text" name="postCaption">
+                <button id="publishPost" class="btn btn-primary" type="submit">
                     <span class="material-symbols-outlined">
                         publish
                     </span>
@@ -69,23 +68,23 @@
 
         <div>
             {% for post in post_list %}
-                <div>
-                    <span>{{ post.user }}</span>
-                    <span>{{ post.song }}</span>
-                    <span>{{ post.caption }}</span>
+                <div class="post">
+                    <span><strong>Usuario:</strong> {{ post.user }}</span>
+                    <span><strong>Canción:</strong> {{ post.song }}</span>
+                    <span><strong>Descripción:</strong> {{ post.caption }}</span>
                 </div>
             {% endfor %}
         </div>
 
         <div>
-            <button id="addPost" onclick="showNewPostForm()">
+            <button id="addPost" class="btn btn-outline-success" onclick="showNewPostForm()">
                 <span class="material-symbols-outlined">
                     add
                 </span>
             </button>
         </div>
 
-        <div id=”dvErrorMsg” style="font-weight:bold; color: white; background-color:red">
+        <div id="dvErrorMsg">
             {% with error_messages = get_flashed_messages() %}
                 {% if error_messages %}
                     {% for message in error_messages %}

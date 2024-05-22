@@ -3,44 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--<link rel="stylesheet" href="style.css" type="text/css">-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script>
+        function closeError(){
+            document.getElementById("dvErrorMsg").style.display = "none";
+        }
+    </script>
     <title>Login</title> 
 </head>
 <body>
-    <section id="loginMain" class="mainSection">
-        <div id="loginTitles" class="mainTitles">
-            <h1 id="sapcTitle">Wanna share</h1>
-            <h1 id="loginTitle">Welcome back!</h1>
+    <section id="loginMain">
+        <div id="loginTitles" class="mainTitles text-center">
+            <h1 id="sapcTitle" class="display-4">Wanna Share</h1>
+            <h1 id="loginTitle" class="display-5">Welcome back!</h1>
         </div>
-        <div>
-            <fieldset>
 
-                <form id="loginForm" class="form" action="/login" method="POST">
-                    <label id="usernameLabel" class="fieldLabel" for="username">Username</label>
-                    <input class="logInput" type="text" placeholder="Type username" id="username" name="username" required>
+        <div id="loginBox" class="container">
+            <fieldset>
+                <form id="loginForm" action="/login" method="POST">
+                    <div class="form-group text-center">
+                        <label id="usernameLabel" class="logRegLabel" for="username">Username</label>
+                        <input class="form-control" type="text" placeholder="Type username" id="username" name="username" required>
+                    </div>
+                    <div class="form-group text-center">
+                        <label id="passLabel" class="logRegLabel" for="password">Password</label>
+                        <input class="form-control" type="password" placeholder="Type password" id="password" name="passwd" required>
+                    </div>
     
-                    <label id="passLabel" class="fieldLabel" for="password">Password</label>
-                    <input class="logInput" type="password" placeholder="Type password" id="password" name="passwd" required>
-    
-                    <button id="loginButton" type="submit">Sign in</button>
+                    <button id="loginButton" class="btn btn-primary" type="submit">Sign in</button>
                 </form>
 
                 <a id="forgotPass" href="index.php?controller=user&amp;action=recover">Forgot password?</a><br/>
-                <div id="createContainer">
-                    <button id="createAcc" onclick="window.location.href='/register'">Create user</button>
+                <div id="createContainer" class="mt-3 text-center">
+                    <button id="createAcc" class="btn btn-secondary" onclick="window.location.href='/register'">Create user</button>
                 </div>
             </fieldset>
         </div>
 
-        <div id=”dvErrorMsg” style="font-weight:bold; color: white; background-color:red">
-            {% with error_messages = get_flashed_messages() %}
-                {% if error_messages %}
-                    {% for message in error_messages %}
-                        {{ message }}
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-        </div>
+        
+        {% with error_messages = get_flashed_messages() %}
+            {% if error_messages %}
+            <div id="dvErrorMsg" class="alert alert-danger" role="alert">
+                {% for message in error_messages %}
+                    {{ message }}
+                {% endfor %}
+                <button id="closeError" onclick="closeError()">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </button>
+            </div>
+            {% endif %}
+        {% endwith %}
     </section>
 </body>
 </html>
