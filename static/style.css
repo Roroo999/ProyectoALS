@@ -167,30 +167,77 @@ body{
     border-top: 1px solid #999999;
 }
 
+#addPostCont{
+    margin-bottom: 4vh;
+}
+
 /*************************************Profile***************************************/
-#personLogo{
+#personLogo {
     border-radius: 100%;
     border: 1px solid #888888;
     padding: 10px;
+    font-size: 48px; /* Asegura que el ícono sea grande */
 }
 
-#mainContent{
+#mainContent {
     text-align: center;
 }
 
-#saveChanges{
+#saveChanges {
     display: block;
     margin: 20px auto;
-    width: 5vw;
+    width: 100px;
 }
 
-#editProfile .form-control{
+#editProfile .form-control {
     width: 50%;
     margin: 0 auto;
 }
 
-#showEditOps{
+#showEditOps {
     display: block;
     margin: 20px auto;
-    width: 3vw;
+    width: 100px;
 }
+
+#descUser {
+    border-radius: 8px;
+    margin: 10px;
+    padding: 10px;
+    display: inline-block;
+}
+
+#mainProfile {
+    border-radius: 8px;
+    border: 1px solid #AAAAAA;
+    max-width: 20vw;
+    padding: 7vh;
+    margin: 0 auto;
+}
+
+#profileMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.recent-posts {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#dashTitles {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#backToDash {
+    width: 100%;
+    text-align: right;
+}
+
+#followUser, #unfollowUser{
+    margin-top: 2vh;
+}
+

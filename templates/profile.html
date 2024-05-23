@@ -9,7 +9,7 @@
     <script>
         function showEditProf(){
             var options = document.getElementById('editProfileCont');
-            if (options.style.display == 'none') {
+            if (options.style.display === 'none') {
                 options.style.display = 'block';
             } else {
                 options.style.display = 'none';
@@ -24,75 +24,81 @@
             <h1 id="loginTitle">Wanna share!</h1>
         </div>
 
-        <div id="backToDash">
+        <div id="backToDash" class="text-right mb-3">
             <form action="/home/main" method="GET">
-                <button id="backToDashBut" type="submit">
+                <button id="backToDashBut" type="submit" class="btn btn-outline-secondary">
                     <span class="material-symbols-outlined">
                         home
                     </span>
                 </button>
             </form>
-            
         </div>
 
         <div id="mainContent">
-            <span id="personLogo" class="material-symbols-outlined">
-                person
-            </span>
-            <span>{{ username }}</span><br/>
-            <span>{{ description }}</span><br/>
-            <span>{{ followers }} followers</span><br/>
-            <span>{{ following }} following</span><br/>
-            <span>
-            {% if followed == 0 %}
-                <form id="followUser" action="/user/follow" method="POST">
-                    <input name="uFollowed" type="hidden" value="{{ username }}">
-                    <button id="followUser" type="submit">
-                        <span class="material-symbols-outlined">
-                            person_add
-                        </span>
-                    </button>
-                </form>
-            {% elif followed == 1 %}
-                <form id="unfollowUser" action="/user/unfollow" method="POST">
-                    <input name="uUnfollowed" type="hidden" value="{{ username }}">
-                    <button id="unfollowUser" type="submit">
-                        <span class="material-symbols-outlined">
-                            person_remove
-                        </span>
-                    </button>
-                </form>
-            {% else %}
-                <button id="showEditOps" class=" btn btn-primary" onclick="showEditProf()">
-                    <span class="material-symbols-outlined">
-                        edit
-                    </span>
-                </button>
-                <div id="editProfileCont" style="display: none;">
-                    <form id="editProfile" class="form-group" action="/user/edit_profile" method="POST">
-                        <label>New Description</label>
-                        <input class="form-control" type="text" name="newDesc" placeholder="{{ description}}">
-                        <label>Change email</label>
-                        <input class="form-control" type="text" name="newEmail" placeholder="{{ email }}">
-                        <button id="saveChanges" class="btn btn-primary" type="submit">
+            <div id="mainProfile"> 
+                <span id="personLogo" class="material-symbols-outlined">
+                    person
+                </span>
+                <br/>
+                <span>@{{ username }}</span><br/>
+                <span id="descUser">{{ description }}</span><br/>
+                <span>{{ followers }} followers</span><br/>
+                <span>{{ following }} following</span><br/>
+                <span>
+                {% if followed == 0 %}
+                    <form id="followUser" action="/user/follow" method="POST">
+                        <input name="uFollowed" type="hidden" value="{{ username }}">
+                        <button id="followUser" class="btn btn-outline-success" type="submit">
                             <span class="material-symbols-outlined">
-                                save
+                                person_add
                             </span>
                         </button>
-                    </form>      
-                </div>
-            {% endif %}
-            </span>
-            {% for post in recent_posts %}
-                <br/>
-                <span>{{ post.song }}</span>
-                <span>{{ post.lyric }}</span>
-                <span>{{ post.caption }}</span>
-            {% endfor %}
-
+                    </form>
+                {% elif followed == 1 %}
+                    <form id="unfollowUser" action="/user/unfollow" method="POST">
+                        <input name="uUnfollowed" type="hidden" value="{{ username }}">
+                        <button id="unfollowUser" class="btn btn-outline-danger" type="submit">
+                            <span class="material-symbols-outlined">
+                                person_remove
+                            </span>
+                        </button>
+                    </form>
+                {% else %}
+                    <button id="showEditOps" class="btn btn-primary" onclick="showEditProf()">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                    </button>
+                    <div id="editProfileCont" style="display: none;">
+                        <form id="editProfile" class="form-group" action="/user/edit_profile" method="POST">
+                            <label>New Description</label>
+                            <input class="form-control" type="text" name="newDesc" placeholder="{{ description }}">
+                            <label>Change email</label>
+                            <input class="form-control" type="text" name="newEmail" placeholder="{{ email }}">
+                            <button id="saveChanges" class="btn btn-primary" type="submit">
+                                <span class="material-symbols-outlined">
+                                    save
+                                </span>
+                            </button>
+                        </form>      
+                    </div>
+                {% endif %}
+                </span>
+            </div>
+            <div class="recent-posts mt-4">
+                {% for post in recent_posts %}
+                    <div class="card my-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.song }}</h5>
+                            <p class="card-text">{{ post.lyric }}</p>
+                            <p class="card-text"><small class="text-muted">{{ post.caption }}</small></p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
 
-        <div id=”dvErrorMsg” style="font-weight:bold; color: white; background-color:red">
+        <div id="dvErrorMsg" class="alert alert-danger" role="alert" style="display: none;">
             {% with error_messages = get_flashed_messages() %}
                 {% if error_messages %}
                     {% for message in error_messages %}
