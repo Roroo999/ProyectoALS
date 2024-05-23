@@ -18,6 +18,17 @@
             document.getElementById("closeNewPostForm").style.display = "none";
             document.getElementById("addPost").style.display = "block";
         }
+
+        function showSettingsOptions() {
+            var options = document.getElementById('settingsOptions');
+            if (options.style.display == 'none') {
+                options.style.display = 'block';
+            } else {
+                options.style.display = 'none';
+            }        
+        }
+
+
     </script>
     <title>Home</title> 
 </head>
@@ -26,6 +37,19 @@
         <div id="dashTitles">
             <h1 id="loginTitle" class="display-4">Wanna share!</h1>
         </div>
+
+        <div id="settingsDiv">
+            <button id="settingsBut" onclick="showSettingsOptions()">
+                <span class="material-symbols-outlined">
+                    settings
+                </span>
+            </button>
+            <div id="settingsOptions" style="display: none;">
+                <a href="/user/edit_profile">Edit profile</a>
+                <a id="logountLink" href="/logout">Log out</a>
+            </div>
+        </div>
+
 
         <div>
             <form id="searchBar" class="form-inline" action="/user/searchUser" method="POST">

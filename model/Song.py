@@ -9,7 +9,7 @@ class Song:
         return self.__name
     
     @name.setter
-    def set_name(self, newName):
+    def name(self, newName):
         self.__name = newName
 
     @property
@@ -17,7 +17,7 @@ class Song:
         return self.__artist
     
     @artist.setter
-    def set_artist(self, nArt):
+    def artist(self, nArt):
         self.__artist = nArt
 
     @property 
@@ -25,7 +25,7 @@ class Song:
         return self.__url
     
     @url.setter
-    def set_url(self, nUrl):
+    def url(self, nUrl):
         self.__url = nUrl
 
     def __eq__(self, song2):

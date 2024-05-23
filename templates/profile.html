@@ -6,47 +6,90 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <title>View profile</title> 
+    <script>
+        function showEditProf(){
+            var options = document.getElementById('editProfileCont');
+            if (options.style.display == 'none') {
+                options.style.display = 'block';
+            } else {
+                options.style.display = 'none';
+            }  
+        }
+    </script>
+    <title>Edit profile</title> 
 </head>
 <body>
-    <section id="dashMain" class="mainSection">
-        <div class="mainTitles">
+    <section id="profileMain" class="container">
+        <div id="dashTitles">
             <h1 id="loginTitle">Wanna share!</h1>
         </div>
-        <div>
-            <div>
-                <span>{{ username }}</span>
-                <!--<span>{{ description }}</span>-->
-                <span>{{ followers }} followers</span>
-                <span>{{ following }} following</span>
-                <span>
-                {% if followed == 0 %}
-                    <form id="followUser" action="/user/follow" method="POST">
-                        <input type="hidden" value="{{ username }}">
-                        <button id="followUser" type="submit">
+
+        <div id="backToDash">
+            <form action="/home/main" method="GET">
+                <button id="backToDashBut" type="submit">
+                    <span class="material-symbols-outlined">
+                        home
+                    </span>
+                </button>
+            </form>
+            
+        </div>
+
+        <div id="mainContent">
+            <span id="personLogo" class="material-symbols-outlined">
+                person
+            </span>
+            <span>{{ username }}</span><br/>
+            <span>{{ description }}</span><br/>
+            <span>{{ followers }} followers</span><br/>
+            <span>{{ following }} following</span><br/>
+            <span>
+            {% if followed == 0 %}
+                <form id="followUser" action="/user/follow" method="POST">
+                    <input name="uFollowed" type="hidden" value="{{ username }}">
+                    <button id="followUser" type="submit">
+                        <span class="material-symbols-outlined">
+                            person_add
+                        </span>
+                    </button>
+                </form>
+            {% elif followed == 1 %}
+                <form id="unfollowUser" action="/user/unfollow" method="POST">
+                    <input name="uUnfollowed" type="hidden" value="{{ username }}">
+                    <button id="unfollowUser" type="submit">
+                        <span class="material-symbols-outlined">
+                            person_remove
+                        </span>
+                    </button>
+                </form>
+            {% else %}
+                <button id="showEditOps" class=" btn btn-primary" onclick="showEditProf()">
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+                </button>
+                <div id="editProfileCont" style="display: none;">
+                    <form id="editProfile" class="form-group" action="/user/edit_profile" method="POST">
+                        <label>New Description</label>
+                        <input class="form-control" type="text" name="newDesc" placeholder="{{ description}}">
+                        <label>Change email</label>
+                        <input class="form-control" type="text" name="newEmail" placeholder="{{ email }}">
+                        <button id="saveChanges" class="btn btn-primary" type="submit">
                             <span class="material-symbols-outlined">
-                                person_add
+                                save
                             </span>
                         </button>
-                    </form>
-                {% else %}
-                    <form id="unfollowUser" action="/user/unfollow" method="POST">
-                        <input type="hidden" value="{{ username }}">
-                        <button id="unfollowUser" type="submit">
-                            <span class="material-symbols-outlined">
-                                person_remove
-                            </span>
-                        </button>
-                    </form>
-                {% endif %}
-                </span>
-                {% for post in recent_posts %}
-                    <br/>
-                    <span>{{ post.song }}</span>
-                    <span>{{ post.lyric }}</span>
-                    <span>{{ post.caption }}</span>
-                {% endfor %}
-            </div>
+                    </form>      
+                </div>
+            {% endif %}
+            </span>
+            {% for post in recent_posts %}
+                <br/>
+                <span>{{ post.song }}</span>
+                <span>{{ post.lyric }}</span>
+                <span>{{ post.caption }}</span>
+            {% endfor %}
+
         </div>
 
         <div id=”dvErrorMsg” style="font-weight:bold; color: white; background-color:red">

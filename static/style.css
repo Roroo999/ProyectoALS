@@ -128,3 +128,69 @@ body{
 .post span {
     display: block;
 }
+
+#settingsDiv {
+    position: relative;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+#settingsBut {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+#settingsOptions {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 10px #0000001a;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#settingsOptions a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+#settingsOptions a:hover {
+    background-color: #DDDDDD;
+}
+
+#logoutLink{
+    border-top: 1px solid #999999;
+}
+
+/*************************************Profile***************************************/
+#personLogo{
+    border-radius: 100%;
+    border: 1px solid #888888;
+    padding: 10px;
+}
+
+#mainContent{
+    text-align: center;
+}
+
+#saveChanges{
+    display: block;
+    margin: 20px auto;
+    width: 5vw;
+}
+
+#editProfile .form-control{
+    width: 50%;
+    margin: 0 auto;
+}
+
+#showEditOps{
+    display: block;
+    margin: 20px auto;
+    width: 3vw;
+}

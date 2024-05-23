@@ -35,7 +35,6 @@ def publish_post():
     postCaption = flask.request.form.get('postCaption')
 
     song = Song(songName, songArtist, songLink)
-    lyric = Lyric(songName + "-" + songArtist, lyricSinger, lyricText)
     user = User.current_user()
 
     temp = srp.find_first(Song, lambda s: s.name == songName and s.artist == songArtist)
@@ -45,9 +44,6 @@ def publish_post():
 
     srp.save(Post(user.username, song.get_id(), lyricText, postCaption))
     return flask.redirect("/home/main")
-
-
-
 
 def get_relevant_posts():
     user = User.current_user()

@@ -7,6 +7,7 @@ class User(flask_login.mixins.UserMixin):
         self.__username = username
         self.__email = email
         self.__passwd = safe.generate_password_hash(passwd)
+        self.__description = ""
         self.__followed = []
         self.__followers = []
         self.__posts = []
@@ -18,6 +19,10 @@ class User(flask_login.mixins.UserMixin):
     @property
     def email(self):
         return self.__email
+    
+    @email.setter
+    def email(self, newEmail):
+        self.__email = newEmail
     
     @property
     def passwd(self):
@@ -34,6 +39,14 @@ class User(flask_login.mixins.UserMixin):
     @property 
     def posts(self):
         return self.__posts
+    
+    @property
+    def description(self):
+        return self.__description
+    
+    @description.setter
+    def description(self, newDesc):
+        self.__description = newDesc
 
     def get_id(self):
         return self.username

@@ -63,6 +63,11 @@ def createUser():
         flask.flash("Error: el nombre de usuario no esta disponible")
         return flask.redirect("/register")
     
+@app.route("/logout")
+def logout():
+    flask_login.logout_user()
+    return flask.redirect("/")
+    
 
 
 @lm.user_loader
