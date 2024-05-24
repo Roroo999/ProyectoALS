@@ -11,6 +11,7 @@ class User(flask_login.mixins.UserMixin):
         self.__followed = []
         self.__followers = []
         self.__posts = []
+        self.__likedPosts = []
 
     @property
     def username(self):
@@ -44,6 +45,10 @@ class User(flask_login.mixins.UserMixin):
     def description(self):
         return self.__description
     
+    @property
+    def likedPosts(self):
+        return self.__likedPosts
+    
     @description.setter
     def description(self, newDesc):
         self.__description = newDesc
@@ -65,6 +70,12 @@ class User(flask_login.mixins.UserMixin):
 
     def addPost(self, post):
         self.posts.append(post)
+
+    def addLikedPost(self, post):
+        self.__likedPosts.append(post)
+
+    def removeLike(self, post):
+        self.__likedPosts.remove(post)
 
     def compare_passwd(self, other_pass):
         return safe.check_password_hash(self.passwd, other_pass)

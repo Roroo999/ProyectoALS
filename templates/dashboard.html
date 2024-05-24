@@ -28,6 +28,15 @@
             }        
         }
 
+        function displayComments(){
+            var comments = document.getElementById('commentContainer');
+            if (comments.style.display == 'none') {
+                comments.style.display = 'block';
+            } else {
+                comments.style.display = 'none';
+            }
+        }
+
 
     </script>
     <title>Home</title> 
@@ -103,9 +112,62 @@
                 <div class="post">
                     <span><strong>Usuario:</strong> {{ post.user }}</span>
                     <span><strong>Canción:</strong> {{ post.song }}</span>
+                    <span><strong>Link:</strong> {{ post.link }}</span>
+                    <span><strong>Lyric singer:</strong>{{ post.lyricSing }}</span>
+                    <span><strong>Lyric:</strong>{{ post.lyric }}</span>
                     <span><strong>Descripción:</strong> {{ post.caption }}</span>
+                    <span><strong>{{ post.likes }}</strong></span>
+
+                    {% if post.liked == 1 %}
+                    <form action="/post/unlike" method="POST">
+                        <input type="hidden" value="{{post.postId}}" name="postID">
+                        <button id="likeButton-{{ post.postId }}" class="btn btn-outline-primary" style="background-color: #007bff;">
+                            <span class="material-symbols-outlined">
+                                favorite
+                            </span>
+                        </button>
+                    </form>
+                    {% else %}
+                    <form action="/post/like" method="POST">
+                        <input type="hidden" value="{{post.postId}}" name="postID">
+                        <button id="likeButton-{{ post.postId }}" class="btn btn-outline-primary">
+                            <span class="material-symbols-outlined">
+                                favorite
+                            </span>
+                        </button>
+                    </form>
+                    {% endif %}
+                            
+                    <button id="showComments-{{ post.postId }}" class="btn btn-outline-secondary" onclick="displayComments({{ post.postId }})">
+                        <span class="material-symbols-outlined">
+                            comment
+                        </span>
+                    </button>
+                    <div id="commentContainer-{{ post.postId }}" style="display: none;">
+                        <button id="addComment-{{ post.postId }}" onclick="displayCommForm({{ post.postId }})"></button>
+                        <form id="newCommentForm-{{ post.postId }}" action="/post/comment" method="POST">
+                            <label>New comment</label>
+                            <input class="form-control" type="text" name="newComment" required>
+                            <button type="submit" class="btn btn-outline-primary">
+                                <span class="material-symbols-outlined">
+                                    publish
+                                </span>
+                            </button> 
+                        </form>
+                        {% if post_comments %}
+                            {% for comment in post_comments %}
+                                <div class="comment">
+                                    <span>{{ comment.user }}</span> 
+                                    <span>{{ comment.text }}</span>   
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <span>This post has no comments...</span>
+                        {% endif %}
+                    </div>
                 </div>
             {% endfor %}
+
         </div>
 
         <div id="dvErrorMsg">

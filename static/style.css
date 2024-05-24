@@ -1,7 +1,6 @@
 body{
     font-family:'Courier New', Courier, monospace !important;
-    background-color: #e7f0fa !important;
-
+    background-color: #f4fafa !important;
 }
 
 /******************Login/Register**********************/
@@ -22,7 +21,7 @@ body{
     padding: 5vh 0 5vh 0;
     border-radius: 24px;
     border: 1px solid #a497ee;
-    background-color: azure;
+    background-color: #e2f2ff;
 }
 
 .logRegLabel {
@@ -60,8 +59,8 @@ body{
 }
 
 #backToLogButton{
-    border-radius: 100%;
-    border: 1px solid #CCCCCC;
+    border-radius: 10px;
+    border: 1px solid #999999;
     display: block; 
     margin: 10px auto; 
 }

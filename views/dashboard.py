@@ -3,7 +3,7 @@ import sirope
 
 from model.User import User
 from model.Song import Song
-from model.Lyric import Lyric
+from model.Comment import Lyric
 from model.Post import Post
 
 def get_blprint():
@@ -19,7 +19,14 @@ dash_blpr, srp = get_blprint()
 @dash_blpr.route("/main", methods=["GET"])
 def show_dash():
 
+    user = User.current_user()
     post_list = get_relevant_posts()
+
+    for post in post_list:
+        if post.postId in user.likedPosts:
+            post.liked = 1
+        else:
+            post.liked = 0
 
     sust = {"post_list" : post_list}
     return flask.render_template("dashboard.html", **sust)
@@ -39,10 +46,13 @@ def publish_post():
 
     temp = srp.find_first(Song, lambda s: s.name == songName and s.artist == songArtist)
 
+    #para evitar tener canciones repetidas, esto se puede utilizar para funcionalidades en un futuro
+    #como mejor recomendacion de canciones segun los gustos del usuario
     if temp is None:
         srp.save(song)
 
-    srp.save(Post(user.username, song.get_id(), lyricText, postCaption))
+    idPost = (srp.num_objs(Post) + 1)
+    srp.save(Post(idPost, user.username, song.get_id(), lyricText, lyricSinger, postCaption))
     return flask.redirect("/home/main")
 
 def get_relevant_posts():

@@ -26,9 +26,12 @@ def search_user():
     if res is not None:
         recent_posts = srp.filter(Post, lambda p: p.user == res.username)
         followed = 0
-        if res.username in user.followed:
+        if res.username in user.followed and res.username != user.username:
             followed = 1
 
+        elif res.username == user.username:
+            followed = -1
+        
         sust = {"username" : res.username,
                 "description": res.description,
                 "followers" : len(res.followers),

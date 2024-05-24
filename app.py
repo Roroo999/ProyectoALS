@@ -6,6 +6,7 @@ from model.User import User
 
 from views.user import user_blpr
 from views.dashboard import dash_blpr
+from views.post import post_blpr
 
 def create_app():
     lmanager = flask_login.login_manager.LoginManager()
@@ -15,6 +16,7 @@ def create_app():
     lmanager.init_app(fapp)
     fapp.register_blueprint(user_blpr)
     fapp.register_blueprint(dash_blpr)
+    fapp.register_blueprint(post_blpr)
 
     return fapp, lmanager, syrp
 
