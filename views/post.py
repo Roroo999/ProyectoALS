@@ -16,59 +16,63 @@ def get_blprint():
 
 post_blpr, srp = get_blprint()
 
-@post_blpr.route("/like")
+@post_blpr.route("/like", methods=["POST"])
 def likepost():
 
     user = User.current_user()
     userProf = flask.request.form.get("userProf")
     postId = flask.request.form.get("postID")
-    post = srp.find_first(lambda p: p.postId == postId)
-    post.likePost()
-    user.addLikedPost(postId)
-    srp.save(post)
-    srp.save(user)
-
-    if userProf != "":
+    post = srp.find_first(Post, lambda p: p.postId == int(postId))
+    if post.postId not in user.likedPosts:
+        post.likePost()
+        user.addLikedPost(postId)
+        srp.save(post)
+        srp.save(user)
+        
+    if userProf is not None:
         sust = getValues(user, userProf)
         return flask.render_template("profile.html", **sust)
     
     else:
         return flask.redirect("/home/main")
 
-@post_blpr.route("/unlike")
+@post_blpr.route("/unlike", methods=["POST"])
 def unlikepost():
 
     user = User.current_user()
     userProf = flask.request.form.get("userProf")
     postId = flask.request.form.get("postID")
-    post = srp.find_first(lambda p: p.postId == postId)
+    post = srp.find_first(Post, lambda p: p.postId == int(postId))
     post.removeLike()
     user.removeLike(postId)
     srp.save(post)
     srp.save(user)
 
-    if userProf != "":
+    if userProf is not None:
         sust = getValues(user, userProf)
         return flask.render_template("profile.html", **sust)
     
     else:
         return flask.redirect("/home/main")
 
-@post_blpr.route("/comment")
+@post_blpr.route("/comment", methods=["POST"])
 def commentpost():
 
     userProf = flask.request.form.get("userProf")
     
-    commentText = flask.request.form.get("comment")
-    postId = flask.request.form.get("postID")
+    commentText = flask.request.form.get("newComment")
+    postIdent = flask.request.form.get("postID")
 
-    post = srp.find_first(lambda p: p.postId == postId)
-    comment = Comment(User.current_user().username), post, commentText
-    post.addComment(comment)
+    post = srp.find_first(Post, lambda p: p.postId == int(postIdent))
+
+    commentId = (srp.num_objs(Comment) + 1)
+    comment = Comment(commentId, User.current_user().username, postIdent, commentText)
+    post.addComment(commentId)
 
     srp.save(post)
+    srp.save(comment)
 
-    if userProf != "":
+    if userProf is not None:
         sust = getValues(User.current_user(), userProf)
         return flask.render_template("profile.html", **sust)
     
@@ -81,6 +85,7 @@ def getValues(user, userProf):
 
     recent_posts = srp.filter(Post, lambda p: p.user == res.username)
     followed = 0
+
     if res.username in user.followed and res.username != user.username:
         followed = 1
 

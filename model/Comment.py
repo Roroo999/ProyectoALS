@@ -1,5 +1,6 @@
 class Comment:
-    def __init__(self, user, post, text):
+    def __init__(self, commentId, user, post, text):
+        self.__commentId = commentId
         self.__user = user
         self.__post = post
         self.__text = text
@@ -15,4 +16,10 @@ class Comment:
     @property
     def text(self):
         return self.__text
+    
+    @property 
+    def commentId(self):
+        return self.__commentId
+    
+
     

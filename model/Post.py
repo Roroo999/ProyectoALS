@@ -39,7 +39,7 @@ class Post:
     
     @property
     def postId(self):
-        return self.__id
+        return self.__postId
     
     def addComment(self, comment):
         self.__comments.append(comment)

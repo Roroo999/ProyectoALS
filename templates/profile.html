@@ -85,28 +85,78 @@
                 {% endif %}
                 </span>
             </div>
-            <div class="recent-posts mt-4">
+
+            <div>
                 {% for post in recent_posts %}
-                    <div class="card my-3">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ post.song }}</h5>
-                            <p class="card-text">{{ post.lyric }}</p>
-                            <p class="card-text"><small class="text-muted">{{ post.caption }}</small></p>
+                    <div class="post">
+                        <span><strong>@</strong>{{ post.user }}</span>
+                        <span><strong>Canción:</strong> {{ post.song }}</span>
+                        <span><strong>Link:</strong><a href="{{ post.song_info.url }}"></a>{{ post.song_info.url }}</span>
+                        <span><strong>Lyric singer:</strong>{{ post.lyricSing }}</span>
+                        <span><strong>Lyric:</strong>{{ post.lyric }}</span>
+                        <span><strong>Descripción:</strong> {{ post.caption }}</span>
+                        <span><strong>Likes: {{ post.likes }}</strong></span>
+
+                        {% if post.liked == 1 %}
+                        <form action="/post/unlike" method="POST">
+                            <input type="hidden" value="{{post.postId}}" name="postID">
+                            <input type="hidden" value="{{ post.user }}" name="userProf">
+                            <button id="likeButton-{{ post.postId }}" class="btn btn-outline-primary" style="background-color: #007bff;">
+                                <span class="material-symbols-outlined" style="color: white";>
+                                    favorite
+                                </span>
+                            </button>
+                        </form>
+                        {% else %}
+                        <form action="/post/like" method="POST">
+                            <input type="hidden" value="{{post.postId}}" name="postID">
+                            <input type="hidden" value="{{ post.user }}" name="userProf">
+                            <button id="likeButton-{{ post.postId }}" class="btn btn-outline-primary">
+                                <span class="material-symbols-outlined">
+                                    favorite
+                                </span>
+                            </button>
+                        </form>
+                        {% endif %}
+                                
+                        <button id="showComments-{{ post.postId }}" class="btn btn-outline-secondary" onclick="displayComments({{ post.postId }})">
+                            <span class="material-symbols-outlined">
+                                comment
+                            </span>
+                        </button>
+                        <div id="commentContainer-{{ post.postId }}" style="display: none;">
+                            <button id="addComment-{{ post.postId }}" class="btn btn-outline-success" onclick="displayCommForm({{ post.postId }})">
+                                <span class="material-symbols-outlined">
+                                    add
+                                </span>
+                            </button>
+                            <form id="newCommentForm-{{ post.postId }}" style="display: none;" action="/post/comment" method="POST">
+                                <label>New comment</label>
+                                <input type="hidden" value="{{ post.user }}" name="userProf">
+                                <input class="form-control" type="text" name="newComment" required>
+                                <input type="hidden" name="postID" value="{{ post.postId }}">
+                                <button type="submit" class="btn btn-outline-primary">
+                                    <span class="material-symbols-outlined">
+                                        publish
+                                    </span>
+                                </button> 
+                            </form>
+                            {% if post.real_comments %}
+                                {% for comment in post.real_comments %}
+                                    <div class="comment">
+                                        <span><strong>@{{ comment.user }}</strong></span> 
+                                        <span>{{ comment.text }}</span>   
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <span>This post has no comments...</span>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
             </div>
         </div>
 
-        <div id="dvErrorMsg" class="alert alert-danger" role="alert" style="display: none;">
-            {% with error_messages = get_flashed_messages() %}
-                {% if error_messages %}
-                    {% for message in error_messages %}
-                        {{ message }}
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-        </div>
     </section>
 </body>
 </html>

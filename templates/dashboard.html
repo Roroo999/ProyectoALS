@@ -28,12 +28,21 @@
             }        
         }
 
-        function displayComments(){
-            var comments = document.getElementById('commentContainer');
-            if (comments.style.display == 'none') {
-                comments.style.display = 'block';
+        function displayComments(postId) {
+            var commentContainer = document.getElementById('commentContainer-' + postId);
+            if (commentContainer.style.display === 'none') {
+                commentContainer.style.display = 'block';
             } else {
-                comments.style.display = 'none';
+                commentContainer.style.display = 'none';
+            }
+        }
+
+        function displayCommForm(postId) {
+            var commentForm = document.getElementById('newCommentForm-' + postId);
+            if (commentForm.style.display === 'none') {
+                commentForm.style.display = 'block';
+            } else {
+                commentForm.style.display = 'none';
             }
         }
 
@@ -110,19 +119,19 @@
         <div>
             {% for post in post_list %}
                 <div class="post">
-                    <span><strong>Usuario:</strong> {{ post.user }}</span>
+                    <span><strong>@</strong>{{ post.user }}</span>
                     <span><strong>Canción:</strong> {{ post.song }}</span>
-                    <span><strong>Link:</strong> {{ post.link }}</span>
+                    <span><strong>Link:</strong><a href="{{ post.song_info.url }}"></a>{{ post.song_info.url }}</span>
                     <span><strong>Lyric singer:</strong>{{ post.lyricSing }}</span>
                     <span><strong>Lyric:</strong>{{ post.lyric }}</span>
                     <span><strong>Descripción:</strong> {{ post.caption }}</span>
-                    <span><strong>{{ post.likes }}</strong></span>
+                    <span><strong>Likes: {{ post.likes }}</strong></span>
 
                     {% if post.liked == 1 %}
                     <form action="/post/unlike" method="POST">
                         <input type="hidden" value="{{post.postId}}" name="postID">
                         <button id="likeButton-{{ post.postId }}" class="btn btn-outline-primary" style="background-color: #007bff;">
-                            <span class="material-symbols-outlined">
+                            <span class="material-symbols-outlined" style="color: white";>
                                 favorite
                             </span>
                         </button>
@@ -144,20 +153,25 @@
                         </span>
                     </button>
                     <div id="commentContainer-{{ post.postId }}" style="display: none;">
-                        <button id="addComment-{{ post.postId }}" onclick="displayCommForm({{ post.postId }})"></button>
-                        <form id="newCommentForm-{{ post.postId }}" action="/post/comment" method="POST">
+                        <button id="addComment-{{ post.postId }}" class="btn btn-outline-success" onclick="displayCommForm({{ post.postId }})">
+                            <span class="material-symbols-outlined">
+                                add
+                            </span>
+                        </button>
+                        <form id="newCommentForm-{{ post.postId }}" style="display: none;" action="/post/comment" method="POST">
                             <label>New comment</label>
                             <input class="form-control" type="text" name="newComment" required>
+                            <input type="hidden" name="postID" value="{{ post.postId }}">
                             <button type="submit" class="btn btn-outline-primary">
                                 <span class="material-symbols-outlined">
                                     publish
                                 </span>
                             </button> 
                         </form>
-                        {% if post_comments %}
-                            {% for comment in post_comments %}
+                        {% if post.real_comments %}
+                            {% for comment in post.real_comments %}
                                 <div class="comment">
-                                    <span>{{ comment.user }}</span> 
+                                    <span><strong>@{{ comment.user }}</strong></span> 
                                     <span>{{ comment.text }}</span>   
                                 </div>
                             {% endfor %}
@@ -170,15 +184,6 @@
 
         </div>
 
-        <div id="dvErrorMsg">
-            {% with error_messages = get_flashed_messages() %}
-                {% if error_messages %}
-                    {% for message in error_messages %}
-                        {{ message }}
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-        </div>
     </section>
 </body>
 </html>

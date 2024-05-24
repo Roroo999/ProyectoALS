@@ -121,6 +121,7 @@ body{
     border: 1px solid #dee2e6;
     padding: 20px;
     margin-bottom: 20px;
+    margin-top: 20px;
     border-radius: 5px;
 }
 
@@ -170,6 +171,18 @@ body{
     margin-bottom: 4vh;
 }
 
+.comment {
+    background-color: #c8eeff;
+    border: 1px solid #dee2e6;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.comment span {
+    display: block;
+}
+
 /*************************************Profile***************************************/
 #personLogo {
     border-radius: 100%;
@@ -179,7 +192,7 @@ body{
 }
 
 #mainContent {
-    text-align: center;
+    margin-top: 5vh;
 }
 
 #saveChanges {
@@ -212,18 +225,13 @@ body{
     max-width: 20vw;
     padding: 7vh;
     margin: 0 auto;
+    text-align: center;
 }
 
 #profileMain {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.recent-posts {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
 }
 
 #dashTitles {

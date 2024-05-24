@@ -3,8 +3,8 @@ import sirope
 
 from model.User import User
 from model.Song import Song
-from model.Comment import Lyric
 from model.Post import Post
+from model.Comment import Comment
 
 def get_blprint():
     dash_module = flask.blueprints.Blueprint("dash_blpr", __name__,
@@ -23,7 +23,7 @@ def show_dash():
     post_list = get_relevant_posts()
 
     for post in post_list:
-        if post.postId in user.likedPosts:
+        if str(post.postId) in user.likedPosts:
             post.liked = 1
         else:
             post.liked = 0
@@ -44,7 +44,7 @@ def publish_post():
     song = Song(songName, songArtist, songLink)
     user = User.current_user()
 
-    temp = srp.find_first(Song, lambda s: s.name == songName and s.artist == songArtist)
+    temp = srp.find_first(Song, lambda s: s.name+"-"+s.artist == song.get_id())
 
     #para evitar tener canciones repetidas, esto se puede utilizar para funcionalidades en un futuro
     #como mejor recomendacion de canciones segun los gustos del usuario
@@ -69,10 +69,10 @@ def get_relevant_posts():
         followed_user_posts = list(srp.filter(Post, lambda p: p.user == followed_user))
         posts.extend(followed_user_posts)
 
-    # Limitar el número de publicaciones para el dashboard
-    max_posts = 20
-    relevant_posts = posts[:max_posts]
-
-    # Añadir posts de gente que no se siga pero que puedan resultar interesantes para el usuario
-
-    return relevant_posts
+    # cargar el contenido de los comentarios y la informacion de las canciones
+    for post in posts:
+        song_info = srp.find_first(Song, lambda s: s.name+"-"+s.artist == post.song)
+        post.song_info = song_info
+        post_comments = list(srp.filter(Comment, lambda c: int(c.post) == int(post.postId)))
+        post.real_comments = post_comments
+    return posts

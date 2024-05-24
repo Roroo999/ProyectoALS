@@ -3,6 +3,8 @@ import sirope
 
 from model.User import User
 from model.Post import Post
+from model.Song import Song
+from model.Comment import Comment
 
 def get_blprint():
     usr_module = flask.blueprints.Blueprint("user_blpr", __name__,
@@ -24,13 +26,15 @@ def search_user():
     user = User.current_user()
 
     if res is not None:
-        recent_posts = srp.filter(Post, lambda p: p.user == res.username)
+        recent_posts = loadPosts(res, user)
         followed = 0
         if res.username in user.followed and res.username != user.username:
             followed = 1
 
         elif res.username == user.username:
             followed = -1
+
+        print("Length: " + str(len(list(recent_posts))))
         
         sust = {"username" : res.username,
                 "description": res.description,
@@ -57,7 +61,8 @@ def user_follow():
     srp.save(uFollowing)
     srp.save(uFollower)
 
-    recent_posts = srp.filter(Post, lambda p: p.user == uFollowing.username)
+    recent_posts = loadPosts(uFollowing, uFollower)
+
     followed = 0
     if uFollowing.username in uFollower.followed:
         followed = 1
@@ -84,7 +89,8 @@ def user_unfollow():
     srp.save(uUnfollowing)
     srp.save(uUnfollower)
 
-    recent_posts = srp.filter(Post, lambda p: p.user == uUnfollowing.username)
+    recent_posts = loadPosts(uUnfollowing, uUnfollower)
+
     followed = 0
     if uUnfollowing.username in uUnfollower.followed:
         followed = 1
@@ -102,7 +108,7 @@ def user_unfollow():
 def showEditProfile():
     user = User.current_user()
 
-    recent_posts = srp.filter(Post, lambda p: p.user == user.username)
+    recent_posts = loadPosts(user, user)
 
     sust = {"username" : user.username,
                 "description": user.description,
@@ -118,7 +124,7 @@ def showEditProfile():
 def editProfile():
     user = User.current_user()
 
-    recent_posts = srp.filter(Post, lambda p: p.user == user.username)
+    recent_posts = loadPosts(user, user)
 
     newDesc = flask.request.form.get("newDesc")
     newEmail = flask.request.form.get("newEmail")
@@ -140,3 +146,23 @@ def editProfile():
                 "email" : user.email}
     
     return flask.render_template("profile.html", **sust)
+
+def loadPosts(res, user):
+
+    posts = list(srp.filter(Post, lambda p: p.user == res.username))
+
+    for post in posts:
+        print("yurrrr")
+        song_info = srp.find_first(Song, lambda s: s.name+"-"+s.artist == post.song)
+        post.song_info = song_info
+        post_comments = list(srp.filter(Comment, lambda c: int(c.post) == int(post.postId)))
+        post.real_comments = post_comments
+        if str(post.postId) in user.likedPosts:
+            post.liked = 1
+        else:
+            post.liked = 0
+
+    print("length2: " + str(len(posts)))
+
+    return posts
+            
