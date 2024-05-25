@@ -15,6 +15,24 @@
                 options.style.display = 'none';
             }  
         }
+
+        function displayComments(postId) {
+            var commentContainer = document.getElementById('commentContainer-' + postId);
+            if (commentContainer.style.display === 'none') {
+                commentContainer.style.display = 'block';
+            } else {
+                commentContainer.style.display = 'none';
+            }
+        }
+
+        function displayCommForm(postId) {
+            var commentForm = document.getElementById('newCommentForm-' + postId);
+            if (commentForm.style.display === 'none') {
+                commentForm.style.display = 'block';
+            } else {
+                commentForm.style.display = 'none';
+            }
+        }
     </script>
     <title>Edit profile</title> 
 </head>

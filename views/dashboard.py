@@ -23,7 +23,7 @@ def show_dash():
     post_list = get_relevant_posts()
 
     for post in post_list:
-        if str(post.postId) in user.likedPosts:
+        if post.postId in user.likedPosts:
             post.liked = 1
         else:
             post.liked = 0

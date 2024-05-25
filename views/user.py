@@ -152,17 +152,13 @@ def loadPosts(res, user):
     posts = list(srp.filter(Post, lambda p: p.user == res.username))
 
     for post in posts:
-        print("yurrrr")
         song_info = srp.find_first(Song, lambda s: s.name+"-"+s.artist == post.song)
         post.song_info = song_info
         post_comments = list(srp.filter(Comment, lambda c: int(c.post) == int(post.postId)))
         post.real_comments = post_comments
-        if str(post.postId) in user.likedPosts:
+        if post.postId in user.likedPosts:
             post.liked = 1
         else:
             post.liked = 0
-
-    print("length2: " + str(len(posts)))
-
     return posts
             

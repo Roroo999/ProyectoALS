@@ -58,6 +58,14 @@ def createUser():
     email = flask.request.form.get("email")
     passwd = flask.request.form.get("passwd")
 
+    if len(passwd) < 5:
+        flask.flash("Error: La contraseña debe tener al menos 5 caracteres")
+        return flask.redirect("/register")
+    
+    if len(username) < 3:
+        flask.flash("Error: El nombre de usuario debe tener al menos 3 caracteres")
+        return flask.redirect("/register")
+    
     if(User.find(srp, username) == None ):
         srp.save(User(username, email, passwd))
         return flask.redirect("/")
